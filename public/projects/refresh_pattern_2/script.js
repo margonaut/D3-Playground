@@ -23,19 +23,19 @@ var svg = d3.select("body").append("svg")
 
 function update(data) {
   var text = svg.selectAll("text")
-    .data(data);
+    .data(data, function(d) {return d;});
 
+// UPDATE
   text.attr("class", "update");
 
+// ENTER
   text.enter().append("text")
       .attr("class", "enter")
-      .attr("x", function(d, i) { return i * 32; })
-      .attr("dy", ".35em");
+      .attr("dy", ".35em")
+      .text(function(d) { return d; });
 
-  // What I tried first. Mistake: Text is not an attr
-  // of a text element, it is content that goes between the tags
-  // text.attr("text", function(d) { return d });
-  text.text(function(d) { return d; });
+// ENTER AND UPDATE
+  text.attr("x", function(d, i) { return i * 32; });
 
   text.exit().remove();
 }
@@ -46,7 +46,7 @@ function update(data) {
 // sort if necessary
 function alphabetSelection() {
   var alphabet = 'abcdefghijklmnopqrstuvwxyz'.split("");
-  var selection = d3.shuffle(alphabet).slice(0, Math.floor(Math.random() * 26));
+  var selection = d3.shuffle(alphabet).slice(0, Math.floor(Math.random() * 26)).sort();
   return selection
 }
 
