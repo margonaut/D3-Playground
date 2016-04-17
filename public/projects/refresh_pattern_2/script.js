@@ -22,14 +22,28 @@ var svg = d3.select("body").append("svg")
     .attr("transform", "translate(0," + height/2 + ")");
 
 function update(data) {
+  var text = svg.selectAll("text")
+    .data(data);
 
+  text.attr("class", "update");
+
+  text.enter().append("text")
+      .attr("class", "enter")
+      .attr("x", function(d, i) { return i * 32; })
+      .attr("dy", ".35em");
+
+  // What I tried first. Mistake: Text is not an attr
+  // of a text element, it is content that goes between the tags
+  // text.attr("text", function(d) { return d });
+  text.text(function(d) { return d; });
+
+  text.exit().remove();
 }
 
 // random selection method:
 // Get the array, shuffle the array
 // slice the array from 0 to random number
 // sort if necessary
-
 function alphabetSelection() {
   var alphabet = 'abcdefghijklmnopqrstuvwxyz'.split("");
   var selection = d3.shuffle(alphabet).slice(0, Math.floor(Math.random() * 26));
@@ -38,4 +52,6 @@ function alphabetSelection() {
 
 update(alphabet);
 
-// setInterval(alphabetSelection, 1500);
+// setInterval only works if you call your functions within an
+// anonymous function
+setInterval(function() { update(alphabetSelection()) }, 1500);
