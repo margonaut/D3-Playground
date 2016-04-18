@@ -1,0 +1,8 @@
+/*Project specific styles here*/
+text {
+  font: bold 20px monospace;
+}
+
+.enter {
+  fill: green;
+}
